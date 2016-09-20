@@ -31,7 +31,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 @provideHooks({
-    fetch: ({ dispatch }) => {
+    defer: ({ dispatch }) => {
         return Promise.all([
             dispatch(fetchFeatures()),
             dispatch(fetchFeaturesStats())
@@ -44,14 +44,12 @@ export default class FeatureItem extends Component {
         super()
 
         const feature = props.feature || {};
-        const strategy = this.getFeatureStrategyName(feature);
-        this.state = { strategy, strategyData: {}, feature };
+        this.state = { strategyData: {}, feature };
     }
 
     componentWillReceiveProps({ feature }) {
         if (feature.id && feature.id !== this.props.feature.id) {
-            const strategy = this.getFeatureStrategyName(feature);
-            this.setState({ strategy, feature })
+            this.setState({ feature })
         }
     }
 
@@ -79,31 +77,6 @@ export default class FeatureItem extends Component {
         clearInterval(this.interval)
     }
 
-    getFeatureStrategyName(feature) {
-        if (this.state && this.state.strategy) {
-            return this.state.strategy
-        }
-
-        switch (true) {
-            case  feature.shareStrategy !== undefined:
-                return 'shareStrategy';
-
-            case  feature.queryStrategy !== undefined:
-                return 'queryStrategy';
-
-            case  feature.firstStrategy !== undefined:
-                return 'firstStrategy';
-
-            case  feature.headerStrategy !== undefined:
-                return 'headerStrategy';
-
-            case  feature.ipStrategy !== undefined:
-                return 'ipStrategy';
-        }
-
-        return '';
-    }
-
     getStrategyComponents() {
         const components = [];
         const feature = this.state.feature || this.props.feature;
@@ -124,7 +97,7 @@ export default class FeatureItem extends Component {
         }
 
         if (feature.ipStrategy) {
-            components.push(<IPStrategy onChange={this.onStrategyChange.bind(this, 'ipStrategy')} />);
+            components.push(<IPStrategy {...feature['ipStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'ipStrategy')} />);
         }
 
         return components
@@ -151,13 +124,10 @@ export default class FeatureItem extends Component {
     }
 
     save() {
-        const strategy = this.state.strategy;
-        if (!strategy) {
-            console.error('Missing strategy');
-            return;
-        }
-
-        const feature = Object.assign(this.props.feature, this.state.feature, this.state.strategyData);
+        const feature = Object.assign({
+            enabled: false,
+            persistent: false,
+        }, this.props.feature, this.state.feature, this.state.strategyData);
 
         this.props.saveFeature(feature).then(action => {
             if (action.payload.id) {
