@@ -1,0 +1,32 @@
+.main {
+    margin: 50px auto;
+    max-width: 1024px;
+    width: 100%;
+}
+
+.newFeature {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 99999;
+}
+
+.featureList {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.featureListItem {
+    margin: 15px;
+    flex: 1 250px;
+}
+
+.featureListItemDescription {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+    line-height: 22px;
+    font-size: 12px;
+    overflow: hidden;
+    margin: 0;
+}

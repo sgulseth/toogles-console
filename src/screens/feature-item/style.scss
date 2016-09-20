@@ -1,0 +1,39 @@
+.main {
+    max-width: 1024px;
+    width: 100% !important;
+    margin: 50px auto;
+    display: flex;
+    flex-wrap: wrap !important;
+    flex-direction: row !important;
+    padding: 10px;
+
+    .form-input-switch,.form-input-checkbox,.form-input-radio {
+        padding: 10px 0;
+    }
+    .share-strategy {
+        position: relative;
+        .mdl-slider__container {
+            padding: 10px 0 5px 0;
+        }
+        .value {
+            position: absolute;
+            text-align: center;
+            width: 80px;
+            left: 50%;
+            margin-left: -40px;
+        }
+    }
+
+}
+
+.feature {
+    flex: 2;
+}
+
+.stats {
+    flex: 1;
+
+    table {
+        width: 100%;
+    }
+}

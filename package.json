@@ -1,0 +1,28 @@
+{
+  "name": "toogles-console",
+  "version": "1.0.0",
+  "description": "Toogles Console",
+  "author": "Sindre Gulseth",
+  "license": "MIT",
+  "scripts": {
+    "build": "roc build",
+    "dev": "roc dev",
+    "start": "roc start",
+    "lint": "eslint .",
+    "test": "npm run lint"
+  },
+  "dependencies": {
+    "react-mdl": "^1.7.2",
+    "redial": "^0.4.2",
+    "redux-api-middleware": "github:vgno/redux-api-middleware#v1.0.0-beta4",
+    "roc-package-web-app-react": "^1.0.0-alpha"
+  },
+  "devDependencies": {
+    "babel-eslint": "6.0.2",
+    "eslint": "2.6.0",
+    "eslint-config-airbnb": "6.2.0",
+    "eslint-plugin-react": "4.2.3",
+    "roc-package-web-app-react-dev": "^1.0.0-alpha",
+    "roc-plugin-style-sass": "^1.0.0-alpha"
+  }
+}

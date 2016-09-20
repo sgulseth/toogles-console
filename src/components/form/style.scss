@@ -1,0 +1,23 @@
+.input {}
+.checkbox {
+    padding: 10px 0;
+}
+.switch {
+    padding: 10px 0;
+}
+.radio {
+    padding: 10px 0;
+}
+.slider {
+    position: relative;
+    .mdl-slider__container {
+        padding: 10px 0 5px 0;
+    }
+    .value {
+        position: absolute;
+        text-align: center;
+        width: 80px;
+        left: 50%;
+        margin-left: -40px;
+    }
+}
