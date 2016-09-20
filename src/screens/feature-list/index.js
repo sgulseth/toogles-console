@@ -26,7 +26,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 @provideHooks({
-    defer: ({ dispatch }) => {
+    fetch: ({ dispatch }) => {
         return Promise.all([
             dispatch(fetchFeatures(false)),
         ]);

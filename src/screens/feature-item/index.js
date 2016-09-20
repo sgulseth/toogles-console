@@ -31,7 +31,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 @provideHooks({
-    defer: ({ dispatch }) => {
+    fetch: ({ dispatch }) => {
         return Promise.all([
             dispatch(fetchFeatures()),
             dispatch(fetchFeaturesStats())
@@ -55,8 +55,18 @@ export default class FeatureItem extends Component {
         }
     }
 
-    selectStrategy(e) {
-        this.setState({ strategy: e.target.value });
+    selectStrategy(strategy, selected) {
+        const feature = this.state.feature;
+
+        if (selected) {
+            if (!feature[strategy]) {
+                feature[strategy] = {}
+            }
+        } else {
+            feature[strategy] = null;
+        }
+
+        this.setState({ feature });
     }
 
     componentDidMount() {
@@ -94,26 +104,34 @@ export default class FeatureItem extends Component {
         return '';
     }
 
-    getStrategyComponent(strategy, options) {
-        switch(strategy) {
-            case 'shareStrategy':
-                return <ShareStrategy {...options} onChange={this.onStrategyChange.bind(this)} />
-
-            case 'queryStrategy':
-                return <QueryStrategy {...options} onChange={this.onStrategyChange.bind(this)} />
-
-            case 'firstStrategy':
-                return <FirstStrategy {...options} onChange={this.onStrategyChange.bind(this)} />
-
-            case 'headerStrategy':
-                return <HeaderStrategy {...options} onChange={this.onStrategyChange.bind(this)} />
-
-            case 'ipStrategy':
-                return <IPStrategy {...options} onChange={this.onStrategyChange.bind(this)} />
-
-            default:
-                return <div className="unknown-strategy" />
+    getStrategyComponents() {
+        const components = [];
+        const feature = this.state.feature || this.props.feature;
+        if (feature.shareStrategy) {
+            components.push(<ShareStrategy {...feature['shareStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'shareStrategy')} />);
         }
+
+        if (feature.queryStrategy) {
+            components.push(<QueryStrategy {...feature['queryStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'queryStrategy')} />);
+        }
+
+        if (feature.firstStrategy) {
+            components.push(<FirstStrategy {...feature['firstStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'firstStrategy')} />);
+        }
+
+        if (feature.headerStrategy) {
+            components.push(<HeaderStrategy {...feature['headerStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'headerStrategy')} />);
+        }
+
+        if (feature.ipStrategy) {
+            components.push(<IPStrategy onChange={this.onStrategyChange.bind(this, 'ipStrategy')} />);
+        }
+
+        return components
+    }
+
+    hasStrategy(strategy) {
+        return !!this.props.feature[strategy] || !!this.state.feature[strategy]
     }
 
     onFeaturePropChange(prop, val) {
@@ -124,8 +142,12 @@ export default class FeatureItem extends Component {
         this.setState({ feature });
     }
 
-    onStrategyChange(strategyData) {
-        this.setState({ strategyData })
+    onStrategyChange(strategy, data) {
+        this.setState({
+            strategyData: Object.assign(this.state.strategyData, {
+                [strategy]: data
+            })
+        });
     }
 
     save() {
@@ -135,15 +157,7 @@ export default class FeatureItem extends Component {
             return;
         }
 
-        const feature = Object.assign(this.props.feature, this.state.feature, {
-            shareStrategy: null,
-            queryStrategy: null,
-            firstStrategy: null,
-            headerStrategy: null,
-            ipStrategy: null,
-        }, {
-            [strategy]: this.state.strategyData || this.state.feature[strategy]
-        });
+        const feature = Object.assign(this.props.feature, this.state.feature, this.state.strategyData);
 
         this.props.saveFeature(feature).then(action => {
             if (action.payload.id) {
@@ -178,21 +192,22 @@ export default class FeatureItem extends Component {
                             <Textfield label="Description" value={feature.description} onChange={e => this.onFeaturePropChange('description', e.target.value)} floatingLabel />
                         </div>
                         <div>
+                            <Checkbox label="Enabled" id="enabled" checked={feature.enabled} onChange={e => this.onFeaturePropChange('enabled', e.target.checked)} />
+                        </div>
+                        <div>
                             <Checkbox label="Persistent" id="persistent" checked={feature.persistent} onChange={e => this.onFeaturePropChange('persistent', e.target.checked)} />
                         </div>
                         <div>
                             <Textfield label="Expire" value={feature.expire} onChange={e => this.onFeaturePropChange('expire', parseInt(e.target.value, 10))} floatingLabel />
                         </div>
                         <div>
-                            <RadioGroup name="strategy" container="div" childContainer="div" value={strategy} onChange={this.selectStrategy.bind(this)}>
-                                <Radio value="shareStrategy">Share strategy</Radio>
-                                <Radio value="firstStrategy">First strategy</Radio>
-                                <Radio value="queryStrategy">Query strategy</Radio>
-                                <Radio value="headerStrategy">Header strategy</Radio>
-                                <Radio value="ipStrategy">IP strategy</Radio>
-                            </RadioGroup>
+                            <Checkbox label="Share strategy" checked={this.hasStrategy('shareStrategy')} onChange={e => this.selectStrategy('shareStrategy', e.target.checked)} />
+                            <Checkbox label="First strategy" checked={this.hasStrategy('firstStrategy')} onChange={e => this.selectStrategy('firstStrategy', e.target.checked)} />
+                            <Checkbox label="Query strategy" checked={this.hasStrategy('queryStrategy')} onChange={e => this.selectStrategy('queryStrategy', e.target.checked)} />
+                            <Checkbox label="Header strategy" checked={this.hasStrategy('headerStrategy')} onChange={e => this.selectStrategy('headerStrategy', e.target.checked)} />
+                            <Checkbox label="IP strategy" checked={this.hasStrategy('ipStrategy')} onChange={e => this.selectStrategy('ipStrategy', e.target.checked)} />
                         </div>
-                        {this.getStrategyComponent(strategy, feature[strategy])}
+                        {this.getStrategyComponents()}
                     </div>
                     <div className="mdl-card__actions mdl-card--border">
                         <button className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onClick={this.save.bind(this)}>
