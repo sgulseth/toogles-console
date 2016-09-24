@@ -8,7 +8,6 @@ export const FEATURES_STATS_FETCH_PENDING = 'FEATURES_STATS_FETCH_PENDING';
 const { api } = appConfig;
 
 export const fetchFeaturesStats = (force = false) => {
-    console.log('woop')
     return {
         [CALL_API]: {
             endpoint: `${api.url}/api/features/stats`,

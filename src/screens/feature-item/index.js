@@ -10,7 +10,7 @@ import { Textfield, Checkbox, RadioGroup, Radio } from 'react-mdl';
 import { omit } from 'lodash';
 
 import styles from './style.scss';
-import { ShareStrategy, QueryStrategy, FirstStrategy, HeaderStrategy, IPStrategy } from './strategies';
+import { ShareStrategy, QueryStrategy, FirstStrategy, HeaderStrategy, IPStrategy, RefererStrategy, RetargetStrategy } from './strategies';
 import Stats from './stats';
 
 import { fetchFeatures, saveFeature, deleteFeature } from '../../redux/actions/features'
@@ -100,6 +100,14 @@ export default class FeatureItem extends Component {
             components.push(<IPStrategy {...feature['ipStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'ipStrategy')} />);
         }
 
+        if (feature.refererStrategy) {
+            components.push(<RefererStrategy {...feature['refererStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'refererStrategy')} />);
+        }
+
+        if (feature.retargetStrategy) {
+            components.push(<RetargetStrategy {...feature['retargetStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'retargetStrategy')} />);
+        }
+
         return components
     }
 
@@ -176,6 +184,8 @@ export default class FeatureItem extends Component {
                             <Checkbox label="Query strategy" checked={this.hasStrategy('queryStrategy')} onChange={e => this.selectStrategy('queryStrategy', e.target.checked)} />
                             <Checkbox label="Header strategy" checked={this.hasStrategy('headerStrategy')} onChange={e => this.selectStrategy('headerStrategy', e.target.checked)} />
                             <Checkbox label="IP strategy" checked={this.hasStrategy('ipStrategy')} onChange={e => this.selectStrategy('ipStrategy', e.target.checked)} />
+                            <Checkbox label="Referer strategy" checked={this.hasStrategy('refererStrategy')} onChange={e => this.selectStrategy('refererStrategy', e.target.checked)} />
+                            <Checkbox label="Retarget strategy" checked={this.hasStrategy('retargetStrategy')} onChange={e => this.selectStrategy('retargetStrategy', e.target.checked)} />
                         </div>
                         {this.getStrategyComponents()}
                     </div>
