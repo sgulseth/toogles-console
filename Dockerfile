@@ -1,7 +1,7 @@
 FROM node:6
 MAINTAINER Sindre Gulseth <sgulseth@gmail.com>
 
-RUN npm install -g roc@1.0.0-rc.9
+RUN npm install -g roc@1.0.0-rc.10
 RUN mkdir -p /app
 WORKDIR /app
 
