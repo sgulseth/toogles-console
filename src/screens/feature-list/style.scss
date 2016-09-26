@@ -19,6 +19,9 @@
 .featureListItem {
     margin: 15px;
     flex: 1 250px;
+    .stats {
+        float: right;
+    }
 }
 
 .featureListItemDescription {

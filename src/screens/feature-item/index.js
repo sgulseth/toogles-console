@@ -81,31 +81,31 @@ export default class FeatureItem extends Component {
         const components = [];
         const feature = this.state.feature || this.props.feature;
         if (feature.shareStrategy) {
-            components.push(<ShareStrategy {...feature['shareStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'shareStrategy')} />);
+            components.push(<ShareStrategy key="shareStrategy" {...feature['shareStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'shareStrategy')} />);
         }
 
         if (feature.queryStrategy) {
-            components.push(<QueryStrategy {...feature['queryStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'queryStrategy')} />);
+            components.push(<QueryStrategy key="queryStrategy" {...feature['queryStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'queryStrategy')} />);
         }
 
         if (feature.firstStrategy) {
-            components.push(<FirstStrategy {...feature['firstStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'firstStrategy')} />);
+            components.push(<FirstStrategy key="firstStrategy" {...feature['firstStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'firstStrategy')} />);
         }
 
         if (feature.headerStrategy) {
-            components.push(<HeaderStrategy {...feature['headerStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'headerStrategy')} />);
+            components.push(<HeaderStrategy key="headerStrategy" {...feature['headerStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'headerStrategy')} />);
         }
 
         if (feature.ipStrategy) {
-            components.push(<IPStrategy {...feature['ipStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'ipStrategy')} />);
+            components.push(<IPStrategy key="ipStrategy" {...feature['ipStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'ipStrategy')} />);
         }
 
         if (feature.refererStrategy) {
-            components.push(<RefererStrategy {...feature['refererStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'refererStrategy')} />);
+            components.push(<RefererStrategy key="refererStrategy" {...feature['refererStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'refererStrategy')} />);
         }
 
         if (feature.retargetStrategy) {
-            components.push(<RetargetStrategy {...feature['retargetStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'retargetStrategy')} />);
+            components.push(<RetargetStrategy key="retargetStrategy" {...feature['retargetStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'retargetStrategy')} />);
         }
 
         return components

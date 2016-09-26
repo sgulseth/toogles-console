@@ -15,7 +15,8 @@ import Feature from './feature';
 
 function mapStateToProps(state) {
     return {
-        features: values(state.features)
+        features: values(state.features),
+        stats: state.featuresStats || {}
     }
 }
 
@@ -38,7 +39,11 @@ export default class FeatureList extends Component {
         return (
             <div className={styles.main}>
                 <div className={`app-feature-card-list ${styles.featureList}`}>
-                    {this.props.features.map(feature => <Feature key={feature.id} feature={feature}/> )}
+                    {this.props.features.map(feature => {
+                        const stats = this.props.stats[feature.id] || {};
+
+                        return <Feature key={feature.id} feature={feature} stats={stats} />;
+                    })}
                 </div>
                 <Link className={`new-feature ${styles.newFeature}`} to="/feature">
                     <button className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
