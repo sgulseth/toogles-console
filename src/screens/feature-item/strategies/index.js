@@ -5,3 +5,4 @@ export HeaderStrategy from './header-strategy';
 export IPStrategy from './ip-strategy';
 export RefererStrategy from './referer-strategy';
 export RetargetStrategy from './retarget-strategy';
+export UserRecurrencyStrategy from './user-recurrency-strategy';

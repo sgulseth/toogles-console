@@ -10,7 +10,17 @@ import { Textfield, Checkbox, RadioGroup, Radio } from 'react-mdl';
 import { omit } from 'lodash';
 
 import styles from './style.scss';
-import { ShareStrategy, QueryStrategy, FirstStrategy, HeaderStrategy, IPStrategy, RefererStrategy, RetargetStrategy } from './strategies';
+import {
+    ShareStrategy,
+    QueryStrategy,
+    FirstStrategy,
+    HeaderStrategy,
+    IPStrategy,
+    RefererStrategy,
+    RetargetStrategy,
+    UserRecurrencyStrategy
+} from './strategies';
+
 import Stats from './stats';
 
 import { fetchFeatures, saveFeature, deleteFeature } from '../../redux/actions/features'
@@ -108,6 +118,10 @@ export default class FeatureItem extends Component {
             components.push(<RetargetStrategy key="retargetStrategy" {...feature['retargetStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'retargetStrategy')} />);
         }
 
+        if (feature.userRecurrencyStrategy) {
+            components.push(<UserRecurrencyStrategy key="userRecurrencyStrategy" {...feature['userRecurrencyStrategy'] || {}} onChange={this.onStrategyChange.bind(this, 'userRecurrencyStrategy')} />);
+        }
+
         return components
     }
 
@@ -186,6 +200,7 @@ export default class FeatureItem extends Component {
                             <Checkbox label="IP strategy" checked={this.hasStrategy('ipStrategy')} onChange={e => this.selectStrategy('ipStrategy', e.target.checked)} />
                             <Checkbox label="Referer strategy" checked={this.hasStrategy('refererStrategy')} onChange={e => this.selectStrategy('refererStrategy', e.target.checked)} />
                             <Checkbox label="Retarget strategy" checked={this.hasStrategy('retargetStrategy')} onChange={e => this.selectStrategy('retargetStrategy', e.target.checked)} />
+                            <Checkbox label="User Recurrency Strategy" checked={this.hasStrategy('userRecurrencyStrategy')} onChange={e => this.selectStrategy('userRecurrencyStrategy', e.target.checked)} />
                         </div>
                         {this.getStrategyComponents()}
                     </div>
