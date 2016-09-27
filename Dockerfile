@@ -1,4 +1,4 @@
-FROM node:6
+FROM node:6.3
 MAINTAINER Sindre Gulseth <sgulseth@gmail.com>
 
 RUN npm install -g roc@1.0.0-rc.10
